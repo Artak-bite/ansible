@@ -1,0 +1,6 @@
+---
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Ubuntu

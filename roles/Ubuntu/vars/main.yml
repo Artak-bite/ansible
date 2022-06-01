@@ -1,0 +1,7 @@
+required_packeges:
+  - php-fpm
+  - php-mysql
+  - mysql-server
+  - nginx
+  - unzip
+  - pip

@@ -1,0 +1,53 @@
+- name: 'install required packeges'
+  apt:
+    name: "{{ required_packeges }}"
+    state: 'present'
+    update_cache: true
+- name: 'start nginx and enable'
+  service:
+    name: nginx
+    state: started
+    enabled: true
+- name: 'Dawnloade and extract wordpress'
+  unarchive:
+    src: 'https://wordpress.org/latest.zip'
+    dest: '/opt'
+    remote_src: true
+    owner: 'www-data'
+    group: 'www-data'
+- name: 'install PyMySQL in host machine'
+  pip:
+    name: 'PyMySQL'
+    state: 'present'
+- name: 'mysql root user'
+  mysql_user:
+    name: 'root'
+    password: 'root'
+    login_unix_socket: '/var/run/mysqld/mysqld.sock'
+- name: 'create db'
+  mysql_db:
+    name: 'wordpress'
+    state: 'present'
+    login_user: 'root'
+    login_password: 'root'
+- name: 'create db user'
+  mysql_user:
+    name: 'wordpress'
+    password: 'rootik'
+    priv: '*.*:ALL'
+    login_user: 'root'
+    login_password: 'root'
+- name: 'copy wp-config.php file to localhost'
+  copy:
+    src: 'wp-config.php'
+    dest: '/opt/wordpress'
+    owner: 'www-data'
+    group: 'www-data'
+- name: 'copy nginx.conf file to localhost'
+  copy:
+    src: 'nginx.conf'
+    dest: '/etc/nginx/sites-enabled/default'
+- name: 'restart nginx'
+  service:
+    name: 'nginx'
+    state: 'restarted'

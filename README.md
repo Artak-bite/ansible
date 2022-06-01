@@ -1,2 +1,2 @@
-# ansible
-install nginx, mysql, wordpress using ansible
+# Ansible
+install nginx,mysql,wordpress with ansible
